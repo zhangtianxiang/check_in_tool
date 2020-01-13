@@ -52,10 +52,12 @@ class DataPhaser:
 class DateData:
     def __init__(self, date: date):
         self.__rows = []
+        self.__fix = []
         self.__names = []
         self.data = {}
         self.__date = date
         self.__data_file = date.isoformat()+'.csv'
+        self.__fix_file = date.isoformat()+'-fix.csv'
         self.init()
 
     def init(self):
@@ -73,6 +75,22 @@ class DateData:
                 self.data[name]['nickname'] = nickname
                 if time != 'X':
                     self.data[name]['time'] = time
+        try:
+            with open(os.path.join('data', self.__fix_file), 'r', encoding='utf-8') as f:
+                reader = csv.reader(f, delimiter=',')
+                for row in reader:
+                    self.__fix.append(row)
+                    name = row[0]
+                    time = row[1]
+                    reason = row[2]
+                    if name not in self.__names:
+                        self.__names.append(name)
+                        self.data[name] = {}
+                    if 'time' not in self.data[name]:
+                        self.data[name]['time'] = time
+                    self.data[name]['reason'] = reason
+        except:
+            pass
 
 
 if __name__ == "__main__":
