@@ -8,21 +8,6 @@ from datetime import date
 logger = logging.getLogger()
 
 
-def date_phaser(date_str: str) -> date:
-    delimiters = ['/', '-', '.']
-    try:
-        ret = None
-        for delimiter in delimiters:
-            if date_str.find(delimiter) != -1:
-                l = date_str.split(delimiter)
-                ret = date(year=int(l[0]), month=int(l[1]), day=int(l[2]))
-                break
-        assert ret != None
-        return ret
-    except:
-        raise Exception(f'phase date failed[{date_str}]')
-
-
 class Schedule:
     def __init__(self, sched_file='schedule.csv'):
         self.__sched_file = sched_file
@@ -63,11 +48,26 @@ class Schedule:
                         ended = True
                     else:
                         if i & 1:
-                            now_seg.append(date_phaser(date_str))
+                            now_seg.append(Schedule.date_phaser(date_str))
                             self.data[row[0]].append(now_seg)
                             now_seg = []
                         else:
-                            now_seg.append(date_phaser(date_str))
+                            now_seg.append(Schedule.date_phaser(date_str))
+
+    @staticmethod
+    def date_phaser(date_str: str) -> date:
+        delimiters = ['/', '-', '.']
+        try:
+            ret = None
+            for delimiter in delimiters:
+                if date_str.find(delimiter) != -1:
+                    l = date_str.split(delimiter)
+                    ret = date(year=int(l[0]), month=int(l[1]), day=int(l[2]))
+                    break
+            assert ret != None
+            return ret
+        except:
+            raise Exception(f'phase date failed[{date_str}]')
 
 
 if __name__ == "__main__":

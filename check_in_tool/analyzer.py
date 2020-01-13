@@ -33,8 +33,11 @@ class Analyzer:
                     need_check = True
                     break
             if not need_check:
-                if name in date_data.data and 'time' in date_data.data[name]:
-                    date_data.data[name]['state'] = 'should_not_check'
+                if name in date_data.data:
+                    if 'time' in date_data.data[name]:
+                        date_data.data[name]['state'] = 'should_not_check'
+                    else:
+                        date_data.data[name]['state'] = 'not_need_check'
                 continue
             if name in date_data.data:
                 if 'time' in date_data.data[name]:
@@ -57,17 +60,17 @@ class Analyzer:
 
     def show(self):
         if self.not_checked:
-            print('存在以下同学尚未签到')
+            print(f'存在以下{len(self.not_checked)}名同学尚未签到')
             print(self.not_checked)
             print('')
         if self.unknown_checked:
-            print('存在以下未知签到，需要修改签到名字')
+            print(f'存在以下{len(self.unknown_checked)}个未知签到，需要修改签到名字')
             for name, v in self.unknown_checked.items():
                 print(v)
                 print(
                     f'签到名字[{name}] 微信昵称[{v.get("nickname","")}] 签到时间[{v.get("time","")}]')
             print('')
         if self.should_not_check:
-            print('存在以下同学在时间表外的时间签到，需要更新时间表')
+            print(f'存在以下{len(self.should_not_check)}名同学在时间表外的时间签到，需要更新时间表')
             print(self.should_not_check)
             print('')
