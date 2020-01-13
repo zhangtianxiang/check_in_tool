@@ -66,7 +66,6 @@ class Analyzer:
         if self.unknown_checked:
             print(f'存在以下{len(self.unknown_checked)}个未知签到，需要修改签到名字')
             for name, v in self.unknown_checked.items():
-                print(v)
                 print(
                     f'签到名字[{name}] 微信昵称[{v.get("nickname","")}] 签到时间[{v.get("time","")}]')
             print('')
