@@ -54,6 +54,17 @@ class Schedule:
                         else:
                             now_seg.append(Schedule.date_phaser(date_str))
 
+    def show_seg(self, left: date, right: date):
+        for name, segments in self.data.items():
+            intersect = False
+            for segment in segments:
+                st, ed = segment
+                if st > right or ed < left:
+                    continue
+                intersect = True
+            if intersect:
+                print(name, segments)
+
     @staticmethod
     def date_phaser(date_str: str) -> date:
         delimiters = ['/', '-', '.']

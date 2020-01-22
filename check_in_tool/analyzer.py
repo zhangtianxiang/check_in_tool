@@ -69,6 +69,10 @@ class Analyzer:
             print(f'存在以下{len(self.not_checked)}名同学尚未签到')
             print(self.not_checked)
             print('')
+            print(f'他们的签到日期为')
+            for name in self.not_checked:
+                segments = self.__schedule.data[name]
+                print(name, segments)
         else:
             print('该签到的同学全部签到了\n')
 
